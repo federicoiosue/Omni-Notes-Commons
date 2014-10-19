@@ -12,9 +12,10 @@
  ******************************************************************************/
 package it.feio.android.omninotes.commons.models;
 
-import it.feio.android.omninotes.commons.utils.EqualityChecker;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.feio.android.omninotes.commons.utils.EqualityChecker;
 
 public class Note {
 

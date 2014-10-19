@@ -21,7 +21,7 @@ public class Tag {
 	private String name;
 	private String description;
 	private String color;
-	
+
 	public Tag(){
 		super();
 	}
