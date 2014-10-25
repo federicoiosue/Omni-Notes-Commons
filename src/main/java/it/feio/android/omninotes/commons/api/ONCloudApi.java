@@ -12,21 +12,20 @@ public interface ONCloudApi {
     public static final String ATTACHMENTS_FOLDER = "attachments";
 
     public void getNotes(DataRetrievedListener dataRetrievedListener);
-
     public Note getNote(String noteId);
-
     public void putNote(Note note);
+    public void delNote(Note note);
 
     public void getCategories(DataRetrievedListener dataRetrievedListener);
-
     public Category getCategory(String categoryId);
-
     public void putCategory(Category category);
+    public void delCategory(Category category);
 
     public void getAttachments(DataRetrievedListener dataRetrievedListener);
-
     public Attachment getAttachment(String attachmentId);
-
     public void putAttachment(Attachment attachment);
+    public void delAttachment(Attachment attachment);
+
+    public void purge();
 }
 
