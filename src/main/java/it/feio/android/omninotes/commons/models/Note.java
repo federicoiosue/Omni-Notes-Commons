@@ -12,11 +12,11 @@
  ******************************************************************************/
 package it.feio.android.omninotes.commons.models;
 
+import it.feio.android.omninotes.commons.utils.EqualityChecker;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import it.feio.android.omninotes.commons.utils.EqualityChecker;
 
 public class Note implements Serializable {
 
@@ -28,6 +28,7 @@ public class Note implements Serializable {
 	private Boolean archived;
 	private Boolean trashed;
 	private String alarm;
+	private String recurrenceRule;
 	private Double latitude;
 	private Double longitude;
 	private String address;
@@ -50,8 +51,8 @@ public class Note implements Serializable {
 
 
 	public Note(int _id, Long creation, Long lastModification, String title, String content, Integer archived,
-			Integer trashed, String alarm, String latitude, String longitude, Category category, Integer locked,
-			Integer checklist) {
+			Integer trashed, String alarm, String recurrenceRule, String latitude, String longitude, Category 
+			category, Integer locked, Integer checklist) {
 		super();
 		this._id = _id;
 		this.title = title;
@@ -61,6 +62,7 @@ public class Note implements Serializable {
 		this.archived = archived == 1 ? true : false;
 		this.trashed = trashed == 1 ? true : false;
 		this.alarm = alarm;
+		this.recurrenceRule = recurrenceRule;
 		setLatitude(latitude);
 		setLongitude(longitude);
 		setAddress(address);
@@ -79,6 +81,7 @@ public class Note implements Serializable {
 		setArchived(note.isArchived());
 		setTrashed(note.isTrashed());
 		setAlarm(note.getAlarm());
+		setRecurrenceRule(note.getRecurrenceRule());
 		setLatitude(note.getLatitude());
 		setLongitude(note.getLongitude());
 		setAddress(note.getAddress());
@@ -212,6 +215,16 @@ public class Note implements Serializable {
 	}
 
 
+	public String getRecurrenceRule() {
+		return recurrenceRule;
+	}
+
+
+	public void setRecurrenceRule(String recurrenceRule) {
+		this.recurrenceRule = recurrenceRule;
+	}
+
+
 	public Double getLatitude() {
 		return latitude;
 	}
@@ -226,9 +239,9 @@ public class Note implements Serializable {
 		try {
 			setLatitude(Double.parseDouble(latitude));
 		} catch (NumberFormatException e) {
-			latitude = null;
+            this.latitude = null;
 		} catch (NullPointerException e) {
-			latitude = null;
+            this.latitude = null;
 		}
 	}
 
@@ -247,9 +260,9 @@ public class Note implements Serializable {
 		try {
 			setLongitude(Double.parseDouble(longitude));
 		} catch (NumberFormatException e) {
-			longitude = null;
+			this.longitude = null;
 		} catch (NullPointerException e) {
-			latitude = null;
+            this.longitude = null;
 		}
 	}
 
@@ -343,10 +356,11 @@ public class Note implements Serializable {
 		}
 
 		Object[] a = { get_id(), getTitle(), getContent(), getCreation(), getLastModification(), isArchived(),
-				isTrashed(), getAlarm(), getLatitude(), getLongitude(), getAddress(), isLocked(), getCategory() };
+				isTrashed(), getAlarm(), getRecurrenceRule(), getLatitude(), getLongitude(), getAddress(), isLocked(),
+				getCategory() };
 		Object[] b = { note.get_id(), note.getTitle(), note.getContent(), note.getCreation(),
-				note.getLastModification(), note.isArchived(), note.isTrashed(), note.getAlarm(), note.getLatitude(),
-				note.getLongitude(), note.getAddress(), note.isLocked(), note.getCategory() };
+				note.getLastModification(), note.isArchived(), note.isTrashed(), note.getAlarm(), note
+				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(), note.getCategory()};
 		if (EqualityChecker.check(a, b)) {
 			res = true;
 		}
