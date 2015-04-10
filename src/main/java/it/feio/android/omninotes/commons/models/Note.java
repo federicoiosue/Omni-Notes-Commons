@@ -12,6 +12,7 @@
  ******************************************************************************/
 package it.feio.android.omninotes.commons.models;
 
+import com.google.gson.Gson;
 import it.feio.android.omninotes.commons.utils.EqualityChecker;
 
 import java.io.Serializable;
@@ -93,6 +94,12 @@ public class Note implements Serializable {
 			list.add(mAttachment);
 		}
 		setAttachmentsList(list);
+	}
+
+
+	public Note(String jsonNote) {
+		Gson gson = new Gson();
+		gson.fromJson(jsonNote, this.getClass());
 	}
 
 
@@ -390,5 +397,11 @@ public class Note implements Serializable {
 
 	public String toString() {
 		return getTitle();
+	}
+
+
+	public String toJSON() {
+		Gson gson = new Gson();
+		return gson.toJson(this);
 	}
 }
