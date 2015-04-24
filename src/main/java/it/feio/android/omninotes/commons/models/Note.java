@@ -357,10 +357,11 @@ public class Note implements Serializable {
 
 		Object[] a = { get_id(), getTitle(), getContent(), getCreation(), getLastModification(), isArchived(),
 				isTrashed(), getAlarm(), getRecurrenceRule(), getLatitude(), getLongitude(), getAddress(), isLocked(),
-				getCategory() };
+				getCategory(), isChecklist() };
 		Object[] b = { note.get_id(), note.getTitle(), note.getContent(), note.getCreation(),
 				note.getLastModification(), note.isArchived(), note.isTrashed(), note.getAlarm(), note
-				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(), note.getCategory()};
+				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(),
+				note.getCategory(), note.isChecklist()};
 		if (EqualityChecker.check(a, b)) {
 			res = true;
 		}
