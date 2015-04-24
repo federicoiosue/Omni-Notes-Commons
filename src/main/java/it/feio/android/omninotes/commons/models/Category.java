@@ -14,7 +14,7 @@ package it.feio.android.omninotes.commons.models;
 
 
 public class Category {
-	private Integer id;
+	private Long id;
 	private String name;
 	private String description;
 	private String color;
@@ -26,7 +26,7 @@ public class Category {
 	}
 
 
-	public Category(Integer id, String title, String description, String color) {
+	public Category(Long id, String title, String description, String color) {
 		super();
 		this.id = id;
 		this.name = title;
@@ -35,7 +35,7 @@ public class Category {
 	}
 
 
-	public Category(Integer id, String title, String description, String color, int count) {
+	public Category(Long id, String title, String description, String color, int count) {
 		super();
 		this.id = id;
 		this.name = title;
@@ -45,12 +45,12 @@ public class Category {
 	}
 
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

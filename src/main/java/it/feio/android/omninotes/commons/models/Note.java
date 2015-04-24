@@ -1,15 +1,17 @@
-/*******************************************************************************
+/**
+ * ****************************************************************************
  * Copyright 2014 Federico Iosue (federico.iosue@gmail.com)
- * 
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 package it.feio.android.omninotes.commons.models;
 
 import com.google.gson.Gson;
@@ -19,9 +21,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Note implements Serializable {
 
-	private int _id;
 	private String title;
 	private String content;
 	private Long creation;
@@ -51,11 +53,10 @@ public class Note implements Serializable {
 	}
 
 
-	public Note(int _id, Long creation, Long lastModification, String title, String content, Integer archived,
-			Integer trashed, String alarm, String recurrenceRule, String latitude, String longitude, Category 
-			category, Integer locked, Integer checklist) {
+	public Note(Long creation, Long lastModification, String title, String content, Integer archived,
+				Integer trashed, String alarm, String recurrenceRule, String latitude, String longitude, Category
+						category, Integer locked, Integer checklist) {
 		super();
-		this._id = _id;
 		this.title = title;
 		this.content = content;
 		this.creation = creation;
@@ -74,7 +75,11 @@ public class Note implements Serializable {
 
 	public Note(Note note) {
 		super();
-		set_id(note.get_id());
+		buildFromNote(note);
+	}
+
+
+	private void buildFromNote(Note note) {
 		setTitle(note.getTitle());
 		setContent(note.getContent());
 		setCreation(note.getCreation());
@@ -97,19 +102,20 @@ public class Note implements Serializable {
 	}
 
 
-	public Note(String jsonNote) {
+	public void buildFromJson(String jsonNote) {
 		Gson gson = new Gson();
-		gson.fromJson(jsonNote, this.getClass());
+		Note noteFromJson = gson.fromJson(jsonNote, this.getClass());
+		buildFromNote(noteFromJson);
 	}
 
 
-	public void set_id(int _id) {
-		this._id = _id;
+	public void set_id(Long _id) {
+		this.creation = _id;
 	}
 
 
-	public int get_id() {
-		return _id;
+	public Long get_id() {
+		return creation;
 	}
 
 
@@ -246,9 +252,9 @@ public class Note implements Serializable {
 		try {
 			setLatitude(Double.parseDouble(latitude));
 		} catch (NumberFormatException e) {
-            this.latitude = null;
+			this.latitude = null;
 		} catch (NullPointerException e) {
-            this.latitude = null;
+			this.latitude = null;
 		}
 	}
 
@@ -269,7 +275,7 @@ public class Note implements Serializable {
 		} catch (NumberFormatException e) {
 			this.longitude = null;
 		} catch (NullPointerException e) {
-            this.longitude = null;
+			this.longitude = null;
 		}
 	}
 
@@ -362,12 +368,13 @@ public class Note implements Serializable {
 			return res;
 		}
 
-		Object[] a = { get_id(), getTitle(), getContent(), getCreation(), getLastModification(), isArchived(),
+		Object[] a = {getTitle(), getContent(), getCreation(), getLastModification(), isArchived(),
 				isTrashed(), getAlarm(), getRecurrenceRule(), getLatitude(), getLongitude(), getAddress(), isLocked(),
-				getCategory() };
-		Object[] b = { note.get_id(), note.getTitle(), note.getContent(), note.getCreation(),
+				getCategory()};
+		Object[] b = {note.getTitle(), note.getContent(), note.getCreation(),
 				note.getLastModification(), note.isArchived(), note.isTrashed(), note.getAlarm(), note
-				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(), note.getCategory()};
+				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(),
+				note.getCategory()};
 		if (EqualityChecker.check(a, b)) {
 			res = true;
 		}
