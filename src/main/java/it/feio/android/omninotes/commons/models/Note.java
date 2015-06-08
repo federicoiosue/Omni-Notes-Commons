@@ -31,6 +31,7 @@ public class Note implements Serializable {
 	private Boolean archived;
 	private Boolean trashed;
 	private String alarm;
+	private Boolean reminderFired;
 	private String recurrenceRule;
 	private Double latitude;
 	private Double longitude;
@@ -54,22 +55,24 @@ public class Note implements Serializable {
 
 
 	public Note(Long creation, Long lastModification, String title, String content, Integer archived,
-				Integer trashed, String alarm, String recurrenceRule, String latitude, String longitude, Category
-						category, Integer locked, Integer checklist) {
+			Integer trashed, String alarm, Integer reminderFired, String recurrenceRule, String latitude, String longitude, Category
+			category, Integer locked, Integer checklist) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.creation = creation;
 		this.lastModification = lastModification;
-		this.archived = archived == 1 ? true : false;
-		this.trashed = trashed == 1 ? true : false;
+		this.archived = archived == 1;
+		this.trashed = trashed == 1;
 		this.alarm = alarm;
+		this.reminderFired = reminderFired == 1;
 		this.recurrenceRule = recurrenceRule;
 		setLatitude(latitude);
 		setLongitude(longitude);
-		setAddress(address);
-		setLocked(locked == 1 ? true : false);
-		setChecklist(checklist == 1 ? true : false);
+		this.category = category;
+//		this.address = address;
+		this.locked = locked == 1;
+		this.checklist = checklist == 1;
 	}
 
 
@@ -88,6 +91,7 @@ public class Note implements Serializable {
 		setTrashed(note.isTrashed());
 		setAlarm(note.getAlarm());
 		setRecurrenceRule(note.getRecurrenceRule());
+		setReminderFired(note.isReminderFired());
 		setLatitude(note.getLatitude());
 		setLongitude(note.getLongitude());
 		setAddress(note.getAddress());
@@ -184,7 +188,7 @@ public class Note implements Serializable {
 
 
 	public Boolean isArchived() {
-		return archived == null || archived == false ? false : true;
+		return !(archived == null || !archived);
 	}
 
 
@@ -194,12 +198,12 @@ public class Note implements Serializable {
 
 
 	public void setArchived(int archived) {
-		this.archived = archived == 1 ? true : false;
+		this.archived = archived == 1;
 	}
 
 
 	public Boolean isTrashed() {
-		return trashed == null || trashed == false ? false : true;
+		return !(trashed == null || !trashed);
 	}
 
 
@@ -209,7 +213,7 @@ public class Note implements Serializable {
 
 
 	public void setTrashed(int trashed) {
-		this.trashed = trashed == 1 ? true : false;
+		this.trashed = trashed == 1;
 	}
 
 
@@ -225,6 +229,21 @@ public class Note implements Serializable {
 
 	public void setAlarm(long alarm) {
 		this.alarm = String.valueOf(alarm);
+	}
+
+
+	public Boolean isReminderFired() {
+		return !(reminderFired == null || !reminderFired);
+	}
+
+
+	public void setReminderFired(Boolean reminderFired) {
+		this.reminderFired = reminderFired;
+	}
+
+
+	public void setReminderFired(int reminderFired) {
+		this.reminderFired = reminderFired == 1;
 	}
 
 
@@ -291,7 +310,7 @@ public class Note implements Serializable {
 
 
 	public Boolean isLocked() {
-		return locked == null || locked == false ? false : true;
+		return !(locked == null || !locked);
 	}
 
 
@@ -301,12 +320,12 @@ public class Note implements Serializable {
 
 
 	public void setLocked(int locked) {
-		this.locked = locked == 1 ? true : false;
+		this.locked = locked == 1;
 	}
 
 
 	public Boolean isChecklist() {
-		return checklist == null || checklist == false ? false : true;
+		return !(checklist == null || !checklist);
 	}
 
 
@@ -316,7 +335,7 @@ public class Note implements Serializable {
 
 
 	public void setChecklist(int checklist) {
-		this.checklist = checklist == 1 ? true : false;
+		this.checklist = checklist == 1;
 	}
 
 
@@ -370,11 +389,11 @@ public class Note implements Serializable {
 
 		Object[] a = {getTitle(), getContent(), getCreation(), getLastModification(), isArchived(),
 				isTrashed(), getAlarm(), getRecurrenceRule(), getLatitude(), getLongitude(), getAddress(), isLocked(),
-				getCategory()};
+				getCategory(), isChecklist() };
 		Object[] b = {note.getTitle(), note.getContent(), note.getCreation(),
 				note.getLastModification(), note.isArchived(), note.isTrashed(), note.getAlarm(), note
 				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(),
-				note.getCategory()};
+				note.getCategory(), note.isChecklist()};
 		if (EqualityChecker.check(a, b)) {
 			res = true;
 		}
@@ -384,9 +403,7 @@ public class Note implements Serializable {
 
 
 	public boolean isChanged(Note note) {
-		boolean res = false;
-		res = !equals(note) || !getAttachmentsList().equals(note.getAttachmentsList());
-		return res;
+		return !equals(note) || !getAttachmentsList().equals(note.getAttachmentsList());
 	}
 
 
@@ -396,9 +413,7 @@ public class Note implements Serializable {
 		emptyNote.setCreation(getCreation());
 		emptyNote.setCategory(getCategory());
 		// Check
-		if (isChanged(emptyNote))
-			return false;
-		else return true;
+		return !isChanged(emptyNote);
 	}
 
 
