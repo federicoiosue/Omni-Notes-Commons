@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.feio.android</groupId>
     <artifactId>omninotes_commons</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>Omni Notes Commons</name>
     <description>Common classes used for Omni Notes app for Android</description>
     <scm>
