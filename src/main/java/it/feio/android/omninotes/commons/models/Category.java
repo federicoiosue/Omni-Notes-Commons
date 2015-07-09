@@ -13,7 +13,11 @@
 package it.feio.android.omninotes.commons.models;
 
 
+import java.util.Calendar;
+
+
 public class Category {
+
 	private Long id;
 	private String name;
 	private String description;
@@ -22,7 +26,7 @@ public class Category {
 
 
 	public Category() {
-		super();
+		this.id = Calendar.getInstance().getTimeInMillis();
 	}
 
 

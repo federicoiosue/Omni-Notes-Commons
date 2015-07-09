@@ -16,24 +16,31 @@
 package it.feio.android.omninotes.commons.models;
 
 
+import java.util.Calendar;
+
 
 public class Attachment {
-	private int id;
+
+	private Long id;
 	private String uriPath;
 	private String name;
 	private long size;
 	private long length;
 	private String mime_type;
-	
-	public Attachment() {}
+
+
+	public Attachment() {
+		this.id = Calendar.getInstance().getTimeInMillis();}
+
 
 	public Attachment(String uri, String mime_type) {
+		this.id = Calendar.getInstance().getTimeInMillis();
 		this.uriPath = uri;
 		this.setMime_type(mime_type);		
 	}
 
 
-	public Attachment(int id, String uri, String name, int size, long length, String mime_type) {
+	public Attachment(Long id, String uri, String name, long size, long length, String mime_type) {
 		this.id = id;
 		this.uriPath = uri;
 		this.name = name;
@@ -42,11 +49,11 @@ public class Attachment {
 		this.setMime_type(mime_type);
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
