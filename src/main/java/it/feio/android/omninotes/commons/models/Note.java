@@ -378,6 +378,7 @@ public class Note implements Serializable {
 	}
 
 
+	@Override
 	public boolean equals(Object o) {
 		boolean res = false;
 		Note note;
