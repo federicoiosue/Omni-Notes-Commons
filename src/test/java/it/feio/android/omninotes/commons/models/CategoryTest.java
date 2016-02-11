@@ -206,40 +206,66 @@
 
 package it.feio.android.omninotes.commons.models;
 
+import org.junit.Before;
+import org.junit.Test;
 
-public class Tag {
+import java.util.ArrayList;
+import java.util.List;
 
-    private String text;
-    private int count;
-
-
-    public Tag() {
-        super();
-    }
+import static org.junit.Assert.*;
 
 
-    public Tag(String text, int count) {
-        this.text = text;
-        this.count = count;
-    }
+public class CategoryTest {
+
+	private Category category1;
+	private Category category2;
 
 
-    public int getCount() {
-        return count;
-    }
+	@Before
+	public void setUp() {
+		category1 = new Category();
+		category1.setId(1L);
+		category1.setColor("#ffffff");
+		category1.setCount(10);
+		category1.setDescription("first cat description");
+		category1.setName("first cat name");
+
+		category2 = new Category();
+		category2.setId(2L);
+		category2.setColor("#000000");
+		category2.setCount(5);
+		category2.setDescription("second cat description");
+		category2.setName("second cat name");
+	}
 
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+	@Test
+	public void equivalence() {
+		Category newCategory = new Category(category1);
+		assertEquals(category1, newCategory);
+	}
 
 
-    public String getText() {
-        return text;
-    }
+	@Test
+	public void difference() {
+		assertNotEquals(category1, category2);
+	}
 
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	@Test
+	public void listContainsNote() {
+		List<Category> categories = new ArrayList<>();
+		categories.add(category1);
+		categories.add(category2);
+		assertTrue(categories.contains(category2));
+		assertTrue(categories.contains(category1));
+
+		Category newCategory = new Category();
+		newCategory.setName("newCat");
+		newCategory.setDescription("newCat desc");
+		newCategory.setColor("#cccccc");
+		assertFalse(categories.contains(newCategory));
+
+
+	}
 }
