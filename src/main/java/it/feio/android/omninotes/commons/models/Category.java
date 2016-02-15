@@ -300,7 +300,7 @@ public class Category {
 
 	@Override
 	public boolean equals(Object obj) {
-
+		if (obj == null) return false;
 		try {
 			Category c = (Category) obj;
 			return getColor().equals(c.getColor()) && getDescription().equals(c.getDescription()) && getName().equals
