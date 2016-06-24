@@ -210,66 +210,62 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 
-public class NoteTest {
+public class BaseCategoryTest {
 
-	private Note note1;
-	private Note note2;
+	private BaseCategory baseCategory1;
+	private BaseCategory baseCategory2;
 
 
 	@Before
 	public void setUp() {
-		note1 = new Note();
-		note1.setTitle("new title");
-		note1.setContent("some random content");
-		note1.setCreation(Calendar.getInstance().getTimeInMillis() - 10000);
-		note1.setLastModification(Calendar.getInstance().getTimeInMillis() - 10000);
-		note1.setLocked(true);
+		baseCategory1 = new BaseCategory();
+		baseCategory1.setId(1L);
+		baseCategory1.setColor("#ffffff");
+		baseCategory1.setCount(10);
+		baseCategory1.setDescription("first cat description");
+		baseCategory1.setName("first cat name");
 
-		note2 = new Note();
-		note2.setTitle("another title");
-		note2.setContent("some more random different content");
-		note2.setCreation(Calendar.getInstance().getTimeInMillis());
-		note2.setLastModification(Calendar.getInstance().getTimeInMillis());
-		note2.setCategory(new Category());
+		baseCategory2 = new BaseCategory();
+		baseCategory2.setId(2L);
+		baseCategory2.setColor("#000000");
+		baseCategory2.setCount(5);
+		baseCategory2.setDescription("second cat description");
+		baseCategory2.setName("second cat name");
 	}
 
 
 	@Test
 	public void equivalence() {
-		Note newNote = new Note(note1);
-		assertEquals(note1, newNote);
-		newNote.setContent(note1.getContent());
-		assertEquals(note1, newNote);
-	}
-
-
-	@Test
-	public void equivalenceByCategory() {
-		Note newNote = new Note(note1);
-		newNote.setCategory(new Category());
-		assertFalse(note1.equals(newNote));
+		BaseCategory newBaseCategory = new BaseCategory(baseCategory1);
+		assertEquals(baseCategory1, newBaseCategory);
 	}
 
 
 	@Test
 	public void difference() {
-		assertNotEquals(note1, note2);
+		assertNotEquals(baseCategory1, baseCategory2);
 	}
 
 
 	@Test
 	public void listContainsNote() {
-		List<Note> notes = new ArrayList<>();
-		notes.add(note1);
-		notes.add(note2);
-		assertTrue(notes.contains(note1));
-		assertTrue(notes.contains(note2));
-		assertFalse(notes.contains(new Note()));
+		List<BaseCategory> categories = new ArrayList<>();
+		categories.add(baseCategory1);
+		categories.add(baseCategory2);
+		assertTrue(categories.contains(baseCategory2));
+		assertTrue(categories.contains(baseCategory1));
+
+		BaseCategory newBaseCategory = new BaseCategory();
+		newBaseCategory.setName("newCat");
+		newBaseCategory.setDescription("newCat desc");
+		newBaseCategory.setColor("#cccccc");
+		assertFalse(categories.contains(newBaseCategory));
+
+
 	}
 }

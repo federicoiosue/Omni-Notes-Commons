@@ -203,420 +203,87 @@
  *    limitations under the License.
  *
  */
-
 package it.feio.android.omninotes.commons.models;
 
-import com.google.gson.Gson;
-import it.feio.android.omninotes.commons.utils.EqualityChecker;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
 
-public class Note implements Serializable {
+public class BaseAttachment {
 
-	private String title;
-	private String content;
-	private Long creation;
-	private Long lastModification;
-	private Boolean archived;
-	private Boolean trashed;
-	private String alarm;
-	private Boolean reminderFired;
-	private String recurrenceRule;
-	private Double latitude;
-	private Double longitude;
-	private String address;
-	private Category category;
-	private Boolean locked;
-	private Boolean checklist;
-	private List<? extends Attachment> attachmentsList = new ArrayList<>();
-	private transient List<? extends Attachment> attachmentsListOld = new ArrayList<>();
+	private Long id;
+	private String uriPath;
+	private String name;
+	private long size;
+	private long length;
+	private String mime_type;
 
 
-	public Note() {
-		super();
-		this.title = "";
-		this.content = "";
-		this.archived = false;
-		this.trashed = false;
-		this.locked = false;
-		this.checklist = false;
+	public BaseAttachment() {
+		this.id = Calendar.getInstance().getTimeInMillis();}
+
+
+	public BaseAttachment(String uri, String mime_type) {
+		this.id = Calendar.getInstance().getTimeInMillis();
+		this.uriPath = uri;
+		this.setMime_type(mime_type);		
 	}
 
 
-	public Note(Long creation, Long lastModification, String title, String content, Integer archived,
-			Integer trashed, String alarm, Integer reminderFired, String recurrenceRule, String latitude, String longitude, Category
-			category, Integer locked, Integer checklist) {
-		super();
-		this.title = title;
-		this.content = content;
-		this.creation = creation;
-		this.lastModification = lastModification;
-		this.archived = archived == 1;
-		this.trashed = trashed == 1;
-		this.alarm = alarm;
-		this.reminderFired = reminderFired == 1;
-		this.recurrenceRule = recurrenceRule;
-		setLatitude(latitude);
-		setLongitude(longitude);
-		this.category = category;
-//		this.address = address;
-		this.locked = locked == 1;
-		this.checklist = checklist == 1;
+	public BaseAttachment(Long id, String uri, String name, long size, long length, String mime_type) {
+		this.id = id;
+		this.uriPath = uri;
+		this.name = name;
+		this.size = size;
+		this.length = length;
+		this.setMime_type(mime_type);
 	}
 
-
-	public Note(Note note) {
-		super();
-		buildFromNote(note);
+	public Long getId() {
+		return id;
 	}
 
-
-	private void buildFromNote(Note note) {
-		setTitle(note.getTitle());
-		setContent(note.getContent());
-		setCreation(note.getCreation());
-		setLastModification(note.getLastModification());
-		setArchived(note.isArchived());
-		setTrashed(note.isTrashed());
-		setAlarm(note.getAlarm());
-		setRecurrenceRule(note.getRecurrenceRule());
-		setReminderFired(note.isReminderFired());
-		setLatitude(note.getLatitude());
-		setLongitude(note.getLongitude());
-		setAddress(note.getAddress());
-		setCategory(note.getCategory());
-		setLocked(note.isLocked());
-		setChecklist(note.isChecklist());
-		ArrayList<Attachment> list = new ArrayList<Attachment>();
-		for (Attachment mAttachment : note.getAttachmentsList()) {
-			list.add(mAttachment);
-		}
-		setAttachmentsList(list);
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-
-	public void buildFromJson(String jsonNote) {
-		Gson gson = new Gson();
-		Note noteFromJson = gson.fromJson(jsonNote, this.getClass());
-		buildFromNote(noteFromJson);
+	public String getUriPath() {
+		return uriPath;
 	}
 
-
-	public void set_id(Long _id) {
-		this.creation = _id;
+	public void setUriPath(String uriPath) {
+		this.uriPath = uriPath;
 	}
 
-
-	public Long get_id() {
-		return creation;
+	public String getName() {
+		return name;
 	}
 
-
-	public String getTitle() {
-		if (title == null) return "";
-		return title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-
-	public void setTitle(String title) {
-		this.title = title == null ? "" : title;
+	public long getSize() {
+		return size;
 	}
 
-
-	public String getContent() {
-		if (content == null) return "";
-		return content;
+	public void setSize(long size) {
+		this.size = size;
 	}
 
-
-	public void setContent(String content) {
-		this.content = content == null ? "" : content;
+	public long getLength() {
+		return length;
 	}
 
-
-	public Long getCreation() {
-		return creation;
+	public void setLength(long length) {
+		this.length = length;
 	}
 
-
-	public void setCreation(Long creation) {
-		this.creation = creation;
+	public String getMime_type() {
+		return mime_type;
 	}
 
-
-	public void setCreation(String creation) {
-		Long creationLong;
-		try {
-			creationLong = Long.parseLong(creation);
-		} catch (NumberFormatException e) {
-			creationLong = null;
-		}
-		this.creation = creationLong;
-	}
-
-
-	public Long getLastModification() {
-		return lastModification;
-	}
-
-
-	public void setLastModification(Long lastModification) {
-		this.lastModification = lastModification;
-	}
-
-
-	public void setLastModification(String lastModification) {
-		Long lastModificationLong;
-		try {
-			lastModificationLong = Long.parseLong(lastModification);
-		} catch (NumberFormatException e) {
-			lastModificationLong = null;
-		}
-		this.lastModification = lastModificationLong;
-	}
-
-
-	public Boolean isArchived() {
-		return !(archived == null || !archived);
-	}
-
-
-	public void setArchived(Boolean archived) {
-		this.archived = archived;
-	}
-
-
-	public void setArchived(int archived) {
-		this.archived = archived == 1;
-	}
-
-
-	public Boolean isTrashed() {
-		return !(trashed == null || !trashed);
-	}
-
-
-	public void setTrashed(Boolean trashed) {
-		this.trashed = trashed;
-	}
-
-
-	public void setTrashed(int trashed) {
-		this.trashed = trashed == 1;
-	}
-
-
-	public String getAlarm() {
-		return alarm;
-	}
-
-
-	public void setAlarm(String alarm) {
-		this.alarm = alarm;
-	}
-
-
-	public void setAlarm(long alarm) {
-		this.alarm = String.valueOf(alarm);
-	}
-
-
-	public Boolean isReminderFired() {
-		return !(reminderFired == null || !reminderFired);
-	}
-
-
-	public void setReminderFired(Boolean reminderFired) {
-		this.reminderFired = reminderFired;
-	}
-
-
-	public void setReminderFired(int reminderFired) {
-		this.reminderFired = reminderFired == 1;
-	}
-
-
-	public String getRecurrenceRule() {
-		return recurrenceRule;
-	}
-
-
-	public void setRecurrenceRule(String recurrenceRule) {
-		this.recurrenceRule = recurrenceRule;
-	}
-
-
-	public Double getLatitude() {
-		return latitude;
-	}
-
-
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
-	}
-
-
-	public void setLatitude(String latitude) {
-		try {
-			setLatitude(Double.parseDouble(latitude));
-		} catch (NumberFormatException e) {
-			this.latitude = null;
-		} catch (NullPointerException e) {
-			this.latitude = null;
-		}
-	}
-
-
-	public Double getLongitude() {
-		return longitude;
-	}
-
-
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
-
-
-	public void setLongitude(String longitude) {
-		try {
-			setLongitude(Double.parseDouble(longitude));
-		} catch (NumberFormatException e) {
-			this.longitude = null;
-		} catch (NullPointerException e) {
-			this.longitude = null;
-		}
-	}
-
-
-	public Category getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
-
-	public Boolean isLocked() {
-		return !(locked == null || !locked);
-	}
-
-
-	public void setLocked(Boolean locked) {
-		this.locked = locked;
-	}
-
-
-	public void setLocked(int locked) {
-		this.locked = locked == 1;
-	}
-
-
-	public Boolean isChecklist() {
-		return !(checklist == null || !checklist);
-	}
-
-
-	public void setChecklist(Boolean checklist) {
-		this.checklist = checklist;
-	}
-
-
-	public void setChecklist(int checklist) {
-		this.checklist = checklist == 1;
-	}
-
-
-	public String getAddress() {
-		return address;
-	}
-
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-
-	public List<? extends Attachment> getAttachmentsList() {
-		return attachmentsList;
-	}
-
-
-	public void setAttachmentsList(List<? extends Attachment> attachmentsList) {
-		this.attachmentsList = attachmentsList;
-	}
-
-
-	public void backupAttachmentsList() {
-		List<Attachment> attachmentsListOld = new ArrayList<Attachment>();
-		for (Attachment mAttachment : getAttachmentsList()) {
-			attachmentsListOld.add(mAttachment);
-		}
-		this.attachmentsListOld = attachmentsListOld;
-	}
-
-
-	public List<? extends Attachment> getAttachmentsListOld() {
-		return attachmentsListOld;
-	}
-
-
-	public void setAttachmentsListOld(List<? extends Attachment> attachmentsListOld) {
-		this.attachmentsListOld = attachmentsListOld;
-	}
-
-
-	@Override
-	public boolean equals(Object o) {
-		boolean res = false;
-		Note note;
-		try {
-			note = (Note) o;
-		} catch (Exception e) {
-			return res;
-		}
-
-		Object[] a = {getTitle(), getContent(), getCreation(), getLastModification(), isArchived(),
-				isTrashed(), getAlarm(), getRecurrenceRule(), getLatitude(), getLongitude(), getAddress(), isLocked(),
-				getCategory(), isChecklist() };
-		Object[] b = {note.getTitle(), note.getContent(), note.getCreation(),
-				note.getLastModification(), note.isArchived(), note.isTrashed(), note.getAlarm(), note
-				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(),
-				note.getCategory(), note.isChecklist()};
-		if (EqualityChecker.check(a, b)) {
-			res = true;
-		}
-
-		return res;
-	}
-
-
-	public boolean isChanged(Note note) {
-		return !equals(note) || !getAttachmentsList().equals(note.getAttachmentsList());
-	}
-
-
-	public boolean isEmpty() {
-		Note emptyNote = new Note();
-		// Field to exclude for comparison
-		emptyNote.setCreation(getCreation());
-		emptyNote.setCategory(getCategory());
-		// Check
-		return !isChanged(emptyNote);
-	}
-
-
-	public String toString() {
-		return getTitle();
-	}
-
-
-	public String toJSON() {
-		Gson gson = new Gson();
-		return gson.toJson(this);
+	public void setMime_type(String mime_type) {
+		this.mime_type = mime_type;
 	}
 }

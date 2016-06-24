@@ -206,66 +206,107 @@
 
 package it.feio.android.omninotes.commons.models;
 
-import org.junit.Before;
-import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import java.util.Calendar;
 
 
-public class CategoryTest {
+public class BaseCategory {
 
-	private Category category1;
-	private Category category2;
+	private Long id;
+	private String name;
+	private String description;
+	private String color;
+	private int count;
 
 
-	@Before
-	public void setUp() {
-		category1 = new Category();
-		category1.setId(1L);
-		category1.setColor("#ffffff");
-		category1.setCount(10);
-		category1.setDescription("first cat description");
-		category1.setName("first cat name");
-
-		category2 = new Category();
-		category2.setId(2L);
-		category2.setColor("#000000");
-		category2.setCount(5);
-		category2.setDescription("second cat description");
-		category2.setName("second cat name");
+	public BaseCategory() {
+		this.id = Calendar.getInstance().getTimeInMillis();
 	}
 
 
-	@Test
-	public void equivalence() {
-		Category newCategory = new Category(category1);
-		assertEquals(category1, newCategory);
+	public BaseCategory(BaseCategory baseCategory) {
+		this(baseCategory.getId(), baseCategory.getName(), baseCategory.getDescription(), baseCategory.getColor());
 	}
 
 
-	@Test
-	public void difference() {
-		assertNotEquals(category1, category2);
+	public BaseCategory(Long id, String title, String description, String color) {
+		this(id, title, description, color, 0);
 	}
 
 
-	@Test
-	public void listContainsNote() {
-		List<Category> categories = new ArrayList<>();
-		categories.add(category1);
-		categories.add(category2);
-		assertTrue(categories.contains(category2));
-		assertTrue(categories.contains(category1));
-
-		Category newCategory = new Category();
-		newCategory.setName("newCat");
-		newCategory.setDescription("newCat desc");
-		newCategory.setColor("#cccccc");
-		assertFalse(categories.contains(newCategory));
+	public BaseCategory(Long id, String title, String description, String color, int count) {
+		this.id = id;
+		this.name = title;
+		this.description = description;
+		this.color = color;
+		this.count = count;
+	}
 
 
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String title) {
+		this.name = title;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public String getColor() {
+		return color;
+	}
+
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
+	public int getCount() {
+		return count;
+	}
+
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean result = false;
+		if (obj != null && obj.getClass().equals(this.getClass())) {
+			try {
+				BaseCategory c = (BaseCategory) obj;
+				result = (getColor() == c.getColor() || getColor().equals(c.getColor()))
+						&&  (getDescription() == c.getDescription() || getDescription().equals(c.getDescription()))
+						&&  (getName() == c.getName() || getName().equals(c.getName()))
+						&&  (getId() == c.getId() || getId().equals(c.getId()));
+			} catch (ClassCastException e) {
+				result = false;
+			}
+		}
+		return result;
 	}
 }
