@@ -253,7 +253,7 @@ public class NoteTest {
 	public void equivalenceByCategory() {
 		Note newNote = new Note(note1);
 		newNote.setCategory(new Category());
-		assertEquals(note1, newNote);
+		assertFalse(note1.equals(newNote));
 	}
 
 

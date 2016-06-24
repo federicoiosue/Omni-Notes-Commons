@@ -231,8 +231,8 @@ public class Note implements Serializable {
 	private Category category;
 	private Boolean locked;
 	private Boolean checklist;
-	private List<? extends Attachment> attachmentsList = new ArrayList<Attachment>();
-	private List<? extends Attachment> attachmentsListOld = new ArrayList<Attachment>();
+	private List<? extends Attachment> attachmentsList = new ArrayList<>();
+	private transient List<? extends Attachment> attachmentsListOld = new ArrayList<>();
 
 
 	public Note() {
