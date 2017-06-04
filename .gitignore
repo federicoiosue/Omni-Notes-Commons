@@ -16,6 +16,7 @@ bin/
 gen/
 classes/
 gen-external-apklibs/
+out/
  
 # maven output folder
 target
