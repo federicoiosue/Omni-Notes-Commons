@@ -209,7 +209,7 @@ package it.feio.android.omninotes.commons.models;
 import java.util.Calendar;
 
 
-public class Attachment {
+public class BaseAttachment {
 
 	private Long id;
 	private String uriPath;
@@ -219,18 +219,18 @@ public class Attachment {
 	private String mime_type;
 
 
-	public Attachment() {
+	public BaseAttachment() {
 		this.id = Calendar.getInstance().getTimeInMillis();}
 
 
-	public Attachment(String uri, String mime_type) {
+	public BaseAttachment(String uri, String mime_type) {
 		this.id = Calendar.getInstance().getTimeInMillis();
 		this.uriPath = uri;
 		this.setMime_type(mime_type);		
 	}
 
 
-	public Attachment(Long id, String uri, String name, long size, long length, String mime_type) {
+	public BaseAttachment(Long id, String uri, String name, long size, long length, String mime_type) {
 		this.id = id;
 		this.uriPath = uri;
 		this.name = name;

@@ -206,40 +206,70 @@
 
 package it.feio.android.omninotes.commons.models;
 
+import org.junit.Before;
+import org.junit.Test;
 
-public class Tag {
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-    private String text;
-    private int count;
-
-
-    public Tag() {
-        super();
-    }
+import static org.junit.Assert.*;
 
 
-    public Tag(String text, int count) {
-        this.text = text;
-        this.count = count;
-    }
+public class BaseNoteTest {
+
+	private BaseNote baseNote1;
+	private BaseNote baseNote2;
 
 
-    public int getCount() {
-        return count;
-    }
+	@Before
+	public void setUp() {
+		baseNote1 = new BaseNote();
+		baseNote1.setTitle("new title");
+		baseNote1.setContent("some random content");
+		baseNote1.setCreation(Calendar.getInstance().getTimeInMillis() - 10000);
+		baseNote1.setLastModification(Calendar.getInstance().getTimeInMillis() - 10000);
+		baseNote1.setLocked(true);
+
+		baseNote2 = new BaseNote();
+		baseNote2.setTitle("another title");
+		baseNote2.setContent("some more random different content");
+		baseNote2.setCreation(Calendar.getInstance().getTimeInMillis());
+		baseNote2.setLastModification(Calendar.getInstance().getTimeInMillis());
+		baseNote2.setCategory(new BaseCategory());
+	}
 
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+	@Test
+	public void equivalence() {
+		BaseNote newBaseNote = new BaseNote(baseNote1);
+		assertEquals(baseNote1, newBaseNote);
+		newBaseNote.setContent(baseNote1.getContent());
+		assertEquals(baseNote1, newBaseNote);
+	}
 
 
-    public String getText() {
-        return text;
-    }
+	@Test
+	public void equivalenceByCategory() {
+		BaseNote newBaseNote = new BaseNote(baseNote1);
+		newBaseNote.setCategory(new BaseCategory());
+		assertFalse(baseNote1.equals(newBaseNote));
+	}
 
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	@Test
+	public void difference() {
+		assertNotEquals(baseNote1, baseNote2);
+	}
+
+
+	@Test
+	public void listContainsNote() {
+		List<BaseNote> baseNotes = new ArrayList<>();
+		baseNotes.add(baseNote1);
+		baseNotes.add(baseNote2);
+		assertTrue(baseNotes.contains(baseNote1));
+		assertTrue(baseNotes.contains(baseNote2));
+		assertFalse(baseNotes.contains(new BaseNote()));
+	}
 }

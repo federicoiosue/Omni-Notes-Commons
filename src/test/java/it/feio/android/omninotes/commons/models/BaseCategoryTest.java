@@ -206,107 +206,64 @@
 
 package it.feio.android.omninotes.commons.models;
 
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
-
-public class Category {
-
-	private Long id;
-	private String name;
-	private String description;
-	private String color;
-	private int count;
+import static org.junit.Assert.*;
 
 
-	public Category() {
-		this.id = Calendar.getInstance().getTimeInMillis();
+public class BaseCategoryTest {
+
+	private BaseCategory baseCategory1;
+	private BaseCategory baseCategory2;
+
+
+	@Before
+	public void setUp() {
+		baseCategory1 = new BaseCategory();
+		baseCategory1.setId(1L);
+		baseCategory1.setColor("#ffffff");
+		baseCategory1.setCount(10);
+		baseCategory1.setDescription("first cat description");
+		baseCategory1.setName("first cat name");
+
+		baseCategory2 = new BaseCategory();
+		baseCategory2.setId(2L);
+		baseCategory2.setColor("#000000");
+		baseCategory2.setCount(5);
+		baseCategory2.setDescription("second cat description");
+		baseCategory2.setName("second cat name");
 	}
 
 
-	public Category(Category category) {
-		this(category.getId(), category.getName(), category.getDescription(), category.getColor());
+	@Test
+	public void equivalence() {
+		BaseCategory newBaseCategory = new BaseCategory(baseCategory1);
+		assertEquals(baseCategory1, newBaseCategory);
 	}
 
 
-	public Category(Long id, String title, String description, String color) {
-		super();
-		this.id = id;
-		this.name = title;
-		this.description = description;
-		this.color = color;
+	@Test
+	public void difference() {
+		assertNotEquals(baseCategory1, baseCategory2);
 	}
 
 
-	public Category(Long id, String title, String description, String color, int count) {
-		super();
-		this.id = id;
-		this.name = title;
-		this.description = description;
-		this.color = color;
-		this.count = count;
-	}
+	@Test
+	public void listContainsNote() {
+		List<BaseCategory> categories = new ArrayList<>();
+		categories.add(baseCategory1);
+		categories.add(baseCategory2);
+		assertTrue(categories.contains(baseCategory2));
+		assertTrue(categories.contains(baseCategory1));
 
-
-	public Long getId() {
-		return id;
-	}
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String title) {
-		this.name = title;
-	}
-
-
-	public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-
-	public String getColor() {
-		return color;
-	}
-
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-
-	public int getCount() {
-		return count;
-	}
-
-
-	public void setCount(int count) {
-		this.count = count;
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		try {
-			Category c = (Category) obj;
-			return getColor().equals(c.getColor()) && getDescription().equals(c.getDescription()) && getName().equals
-					(c.getName()) && getId().equals(c.getId());
-		} catch (ClassCastException e) {
-			return false;
-		}
+		BaseCategory newBaseCategory = new BaseCategory();
+		newBaseCategory.setName("newCat");
+		newBaseCategory.setDescription("newCat desc");
+		newBaseCategory.setColor("#cccccc");
+		assertFalse(categories.contains(newBaseCategory));
 	}
 }

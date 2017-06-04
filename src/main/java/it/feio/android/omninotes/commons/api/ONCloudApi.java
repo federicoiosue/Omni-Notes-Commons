@@ -207,9 +207,9 @@
 package it.feio.android.omninotes.commons.api;
 
 import it.feio.android.omninotes.commons.listeners.DataRetrievedListener;
-import it.feio.android.omninotes.commons.models.Attachment;
-import it.feio.android.omninotes.commons.models.Category;
-import it.feio.android.omninotes.commons.models.Note;
+import it.feio.android.omninotes.commons.models.BaseAttachment;
+import it.feio.android.omninotes.commons.models.BaseCategory;
+import it.feio.android.omninotes.commons.models.BaseNote;
 
 public interface ONCloudApi {
 
@@ -218,19 +218,19 @@ public interface ONCloudApi {
     public static final String ATTACHMENTS_FOLDER = "attachments";
 
     public void getNotes(DataRetrievedListener dataRetrievedListener);
-    public Note getNote(String noteId);
-    public void putNote(Note note);
-    public void delNote(Note note);
+    public BaseNote getNote(String noteId);
+    public void putNote(BaseNote baseNote);
+    public void delNote(BaseNote baseNote);
 
     public void getCategories(DataRetrievedListener dataRetrievedListener);
-    public Category getCategory(String categoryId);
-    public void putCategory(Category category);
-    public void delCategory(Category category);
+    public BaseCategory getCategory(String categoryId);
+    public void putCategory(BaseCategory baseCategory);
+    public void delCategory(BaseCategory baseCategory);
 
     public void getAttachments(DataRetrievedListener dataRetrievedListener);
-    public Attachment getAttachment(String attachmentId);
-    public void putAttachment(Attachment attachment);
-    public void delAttachment(Attachment attachment);
+    public BaseAttachment getAttachment(String attachmentId);
+    public void putAttachment(BaseAttachment baseAttachment);
+    public void delAttachment(BaseAttachment baseAttachment);
 
     public void purge();
 }

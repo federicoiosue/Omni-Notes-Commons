@@ -214,7 +214,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Note implements Serializable {
+public class BaseNote implements Serializable {
 
 	private String title;
 	private String content;
@@ -228,14 +228,14 @@ public class Note implements Serializable {
 	private Double latitude;
 	private Double longitude;
 	private String address;
-	private Category category;
+	private BaseCategory baseCategory;
 	private Boolean locked;
 	private Boolean checklist;
-	private List<? extends Attachment> attachmentsList = new ArrayList<Attachment>();
-	private List<? extends Attachment> attachmentsListOld = new ArrayList<Attachment>();
+	private List<? extends BaseAttachment> attachmentsList = new ArrayList<>();
+	private transient List<? extends BaseAttachment> attachmentsListOld = new ArrayList<>();
 
 
-	public Note() {
+	public BaseNote() {
 		super();
 		this.title = "";
 		this.content = "";
@@ -246,9 +246,10 @@ public class Note implements Serializable {
 	}
 
 
-	public Note(Long creation, Long lastModification, String title, String content, Integer archived,
-			Integer trashed, String alarm, Integer reminderFired, String recurrenceRule, String latitude, String longitude, Category
-			category, Integer locked, Integer checklist) {
+	public BaseNote(Long creation, Long lastModification, String title, String content, Integer archived,
+					Integer trashed, String alarm, Integer reminderFired, String recurrenceRule, String latitude, String longitude, BaseCategory
+
+							baseCategory, Integer locked, Integer checklist) {
 		super();
 		this.title = title;
 		this.content = content;
@@ -261,38 +262,37 @@ public class Note implements Serializable {
 		this.recurrenceRule = recurrenceRule;
 		setLatitude(latitude);
 		setLongitude(longitude);
-		this.category = category;
-//		this.address = address;
+		this.baseCategory = baseCategory;
 		this.locked = locked == 1;
 		this.checklist = checklist == 1;
 	}
 
 
-	public Note(Note note) {
+	public BaseNote(BaseNote baseNote) {
 		super();
-		buildFromNote(note);
+		buildFromNote(baseNote);
 	}
 
 
-	private void buildFromNote(Note note) {
-		setTitle(note.getTitle());
-		setContent(note.getContent());
-		setCreation(note.getCreation());
-		setLastModification(note.getLastModification());
-		setArchived(note.isArchived());
-		setTrashed(note.isTrashed());
-		setAlarm(note.getAlarm());
-		setRecurrenceRule(note.getRecurrenceRule());
-		setReminderFired(note.isReminderFired());
-		setLatitude(note.getLatitude());
-		setLongitude(note.getLongitude());
-		setAddress(note.getAddress());
-		setCategory(note.getCategory());
-		setLocked(note.isLocked());
-		setChecklist(note.isChecklist());
-		ArrayList<Attachment> list = new ArrayList<Attachment>();
-		for (Attachment mAttachment : note.getAttachmentsList()) {
-			list.add(mAttachment);
+	private void buildFromNote(BaseNote baseNote) {
+		setTitle(baseNote.getTitle());
+		setContent(baseNote.getContent());
+		setCreation(baseNote.getCreation());
+		setLastModification(baseNote.getLastModification());
+		setArchived(baseNote.isArchived());
+		setTrashed(baseNote.isTrashed());
+		setAlarm(baseNote.getAlarm());
+		setRecurrenceRule(baseNote.getRecurrenceRule());
+		setReminderFired(baseNote.isReminderFired());
+		setLatitude(baseNote.getLatitude());
+		setLongitude(baseNote.getLongitude());
+		setAddress(baseNote.getAddress());
+		setCategory(baseNote.getCategory());
+		setLocked(baseNote.isLocked());
+		setChecklist(baseNote.isChecklist());
+		ArrayList<BaseAttachment> list = new ArrayList<BaseAttachment>();
+		for (BaseAttachment mBaseAttachment : baseNote.getAttachmentsList()) {
+			list.add(mBaseAttachment);
 		}
 		setAttachmentsList(list);
 	}
@@ -300,8 +300,8 @@ public class Note implements Serializable {
 
 	public void buildFromJson(String jsonNote) {
 		Gson gson = new Gson();
-		Note noteFromJson = gson.fromJson(jsonNote, this.getClass());
-		buildFromNote(noteFromJson);
+		BaseNote baseNoteFromJson = gson.fromJson(jsonNote, this.getClass());
+		buildFromNote(baseNoteFromJson);
 	}
 
 
@@ -462,9 +462,7 @@ public class Note implements Serializable {
 	public void setLatitude(String latitude) {
 		try {
 			setLatitude(Double.parseDouble(latitude));
-		} catch (NumberFormatException e) {
-			this.latitude = null;
-		} catch (NullPointerException e) {
+		} catch (NumberFormatException | NullPointerException e) {
 			this.latitude = null;
 		}
 	}
@@ -491,13 +489,13 @@ public class Note implements Serializable {
 	}
 
 
-	public Category getCategory() {
-		return category;
+	public BaseCategory getCategory() {
+		return baseCategory;
 	}
 
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategory(BaseCategory baseCategory) {
+		this.baseCategory = baseCategory;
 	}
 
 
@@ -541,31 +539,31 @@ public class Note implements Serializable {
 	}
 
 
-	public List<? extends Attachment> getAttachmentsList() {
+	public List<? extends BaseAttachment> getAttachmentsList() {
 		return attachmentsList;
 	}
 
 
-	public void setAttachmentsList(List<? extends Attachment> attachmentsList) {
+	public void setAttachmentsList(List<? extends BaseAttachment> attachmentsList) {
 		this.attachmentsList = attachmentsList;
 	}
 
 
 	public void backupAttachmentsList() {
-		List<Attachment> attachmentsListOld = new ArrayList<Attachment>();
-		for (Attachment mAttachment : getAttachmentsList()) {
-			attachmentsListOld.add(mAttachment);
+		List<BaseAttachment> attachmentsListOld = new ArrayList<BaseAttachment>();
+		for (BaseAttachment mBaseAttachment : getAttachmentsList()) {
+			attachmentsListOld.add(mBaseAttachment);
 		}
 		this.attachmentsListOld = attachmentsListOld;
 	}
 
 
-	public List<? extends Attachment> getAttachmentsListOld() {
+	public List<? extends BaseAttachment> getAttachmentsListOld() {
 		return attachmentsListOld;
 	}
 
 
-	public void setAttachmentsListOld(List<? extends Attachment> attachmentsListOld) {
+	public void setAttachmentsListOld(List<? extends BaseAttachment> attachmentsListOld) {
 		this.attachmentsListOld = attachmentsListOld;
 	}
 
@@ -573,9 +571,9 @@ public class Note implements Serializable {
 	@Override
 	public boolean equals(Object o) {
 		boolean res = false;
-		Note note;
+		BaseNote baseNote;
 		try {
-			note = (Note) o;
+			baseNote = (BaseNote) o;
 		} catch (Exception e) {
 			return res;
 		}
@@ -583,10 +581,11 @@ public class Note implements Serializable {
 		Object[] a = {getTitle(), getContent(), getCreation(), getLastModification(), isArchived(),
 				isTrashed(), getAlarm(), getRecurrenceRule(), getLatitude(), getLongitude(), getAddress(), isLocked(),
 				getCategory(), isChecklist() };
-		Object[] b = {note.getTitle(), note.getContent(), note.getCreation(),
-				note.getLastModification(), note.isArchived(), note.isTrashed(), note.getAlarm(), note
-				.getRecurrenceRule(), note.getLatitude(), note.getLongitude(), note.getAddress(), note.isLocked(),
-				note.getCategory(), note.isChecklist()};
+		Object[] b = {baseNote.getTitle(), baseNote.getContent(), baseNote.getCreation(),
+				baseNote.getLastModification(), baseNote.isArchived(), baseNote.isTrashed(), baseNote.getAlarm(),
+				baseNote
+				.getRecurrenceRule(), baseNote.getLatitude(), baseNote.getLongitude(), baseNote.getAddress(), baseNote.isLocked(),
+				baseNote.getCategory(), baseNote.isChecklist()};
 		if (EqualityChecker.check(a, b)) {
 			res = true;
 		}
@@ -595,18 +594,18 @@ public class Note implements Serializable {
 	}
 
 
-	public boolean isChanged(Note note) {
-		return !equals(note) || !getAttachmentsList().equals(note.getAttachmentsList());
+	public boolean isChanged(BaseNote baseNote) {
+		return !equals(baseNote) || !getAttachmentsList().equals(baseNote.getAttachmentsList());
 	}
 
 
 	public boolean isEmpty() {
-		Note emptyNote = new Note();
+		BaseNote emptyBaseNote = new BaseNote();
 		// Field to exclude for comparison
-		emptyNote.setCreation(getCreation());
-		emptyNote.setCategory(getCategory());
+		emptyBaseNote.setCreation(getCreation());
+		emptyBaseNote.setCategory(getCategory());
 		// Check
-		return !isChanged(emptyNote);
+		return !isChanged(emptyBaseNote);
 	}
 
 
