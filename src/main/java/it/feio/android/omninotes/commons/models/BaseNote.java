@@ -263,7 +263,6 @@ public class BaseNote implements Serializable {
 		setLatitude(latitude);
 		setLongitude(longitude);
 		this.baseCategory = baseCategory;
-//		this.address = address;
 		this.locked = locked == 1;
 		this.checklist = checklist == 1;
 	}

@@ -265,7 +265,5 @@ public class BaseCategoryTest {
 		newBaseCategory.setDescription("newCat desc");
 		newBaseCategory.setColor("#cccccc");
 		assertFalse(categories.contains(newBaseCategory));
-
-
 	}
 }
