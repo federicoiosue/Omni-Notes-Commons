@@ -209,7 +209,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.federicoiosue</groupId>
     <artifactId>Omni-Notes-Commons</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0</version>
     <name>Omni Notes Commons</name>
     <description>Common classes used for Omni Notes app for Android</description>
     <scm>
