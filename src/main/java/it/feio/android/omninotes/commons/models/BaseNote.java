@@ -307,7 +307,7 @@ public class BaseNote implements Serializable {
 
 
 	public Long get_id() {
-		return creation;
+		return creation > 0 ? creation : null;
 	}
 
 

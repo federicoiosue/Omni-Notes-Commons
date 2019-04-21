@@ -272,4 +272,10 @@ public class BaseNoteTest {
 		assertTrue(baseNotes.contains(baseNote2));
 		assertFalse(baseNotes.contains(new BaseNote()));
 	}
+
+
+	@Test
+	public void defaultIdIsNull() {
+		assertNull(new BaseNote().get_id());
+	}
 }
