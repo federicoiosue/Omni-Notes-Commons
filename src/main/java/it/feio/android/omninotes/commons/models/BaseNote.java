@@ -212,26 +212,25 @@ import it.feio.android.omninotes.commons.utils.EqualityChecker;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
 
-@Data
+
 public class BaseNote implements Serializable {
 
 	private String title;
 	private String content;
-	private long creation;
-	private long lastModification;
-	private boolean archived;
-	private boolean trashed;
-	private Long alarm;
-	private boolean reminderFired;
+	private Long creation;
+	private Long lastModification;
+	private Boolean archived;
+	private Boolean trashed;
+	private String alarm;
+	private Boolean reminderFired;
 	private String recurrenceRule;
 	private Double latitude;
 	private Double longitude;
 	private String address;
 	private BaseCategory baseCategory;
-	private boolean locked;
-	private boolean checklist;
+	private Boolean locked;
+	private Boolean checklist;
 	private List<? extends BaseAttachment> attachmentsList = new ArrayList<>();
 	private transient List<? extends BaseAttachment> attachmentsListOld = new ArrayList<>();
 
@@ -247,24 +246,25 @@ public class BaseNote implements Serializable {
 	}
 
 
-	public BaseNote(Long creation, Long lastModification, String title, String content, boolean archived,
-					boolean trashed, long alarm, boolean reminderFired, String recurrenceRule, String latitude, String longitude,
-					BaseCategory baseCategory, boolean locked, boolean checklist) {
+	public BaseNote(Long creation, Long lastModification, String title, String content, Integer archived,
+					Integer trashed, String alarm, Integer reminderFired, String recurrenceRule, String latitude, String longitude, BaseCategory
+
+							baseCategory, Integer locked, Integer checklist) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.creation = creation;
 		this.lastModification = lastModification;
-		this.archived = archived;
-		this.trashed = trashed;
+		this.archived = archived == 1;
+		this.trashed = trashed == 1;
 		this.alarm = alarm;
-		this.reminderFired = reminderFired;
+		this.reminderFired = reminderFired == 1;
 		this.recurrenceRule = recurrenceRule;
 		setLatitude(latitude);
 		setLongitude(longitude);
 		this.baseCategory = baseCategory;
-		this.locked = locked;
-		this.checklist = checklist;
+		this.locked = locked == 1;
+		this.checklist = checklist == 1;
 	}
 
 
@@ -290,13 +290,17 @@ public class BaseNote implements Serializable {
 		setCategory(baseNote.getCategory());
 		setLocked(baseNote.isLocked());
 		setChecklist(baseNote.isChecklist());
-    ArrayList<BaseAttachment> list = new ArrayList<>(baseNote.getAttachmentsList());
+		ArrayList<BaseAttachment> list = new ArrayList<BaseAttachment>();
+		for (BaseAttachment mBaseAttachment : baseNote.getAttachmentsList()) {
+			list.add(mBaseAttachment);
+		}
 		setAttachmentsList(list);
 	}
 
 
 	public void buildFromJson(String jsonNote) {
-		BaseNote baseNoteFromJson = new Gson().fromJson(jsonNote, this.getClass());
+		Gson gson = new Gson();
+		BaseNote baseNoteFromJson = gson.fromJson(jsonNote, this.getClass());
 		buildFromNote(baseNoteFromJson);
 	}
 
@@ -307,27 +311,146 @@ public class BaseNote implements Serializable {
 
 
 	public Long get_id() {
-		return creation > 0 ? creation : null;
+		return creation;
 	}
 
 
 	public String getTitle() {
-		return this.title == null ? "" : this.title;
+		if (title == null) return "";
+		return title;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title == null ? "" : title;
 	}
 
 
 	public String getContent() {
-		return content == null ? "": content;
+		if (content == null) return "";
+		return content;
 	}
 
 
-	public Long getAlarm() {
-		return alarm == null || alarm == 0 ? null : alarm;
+	public void setContent(String content) {
+		this.content = content == null ? "" : content;
+	}
+
+
+	public Long getCreation() {
+		return creation;
+	}
+
+
+	public void setCreation(Long creation) {
+		this.creation = creation;
+	}
+
+
+	public void setCreation(String creation) {
+		Long creationLong;
+		try {
+			creationLong = Long.parseLong(creation);
+		} catch (NumberFormatException e) {
+			creationLong = null;
+		}
+		this.creation = creationLong;
+	}
+
+
+	public Long getLastModification() {
+		return lastModification;
+	}
+
+
+	public void setLastModification(Long lastModification) {
+		this.lastModification = lastModification;
+	}
+
+
+	public void setLastModification(String lastModification) {
+		Long lastModificationLong;
+		try {
+			lastModificationLong = Long.parseLong(lastModification);
+		} catch (NumberFormatException e) {
+			lastModificationLong = null;
+		}
+		this.lastModification = lastModificationLong;
+	}
+
+
+	public Boolean isArchived() {
+		return !(archived == null || !archived);
+	}
+
+
+	public void setArchived(Boolean archived) {
+		this.archived = archived;
+	}
+
+
+	public void setArchived(int archived) {
+		this.archived = archived == 1;
+	}
+
+
+	public Boolean isTrashed() {
+		return !(trashed == null || !trashed);
+	}
+
+
+	public void setTrashed(Boolean trashed) {
+		this.trashed = trashed;
+	}
+
+
+	public void setTrashed(int trashed) {
+		this.trashed = trashed == 1;
+	}
+
+
+	public String getAlarm() {
+		return alarm;
+	}
+
+
+	public void setAlarm(String alarm) {
+		this.alarm = alarm;
+	}
+
+
+	public void setAlarm(long alarm) {
+		this.alarm = String.valueOf(alarm);
+	}
+
+
+	public Boolean isReminderFired() {
+		return !(reminderFired == null || !reminderFired);
+	}
+
+
+	public void setReminderFired(Boolean reminderFired) {
+		this.reminderFired = reminderFired;
+	}
+
+
+	public void setReminderFired(int reminderFired) {
+		this.reminderFired = reminderFired == 1;
+	}
+
+
+	public String getRecurrenceRule() {
+		return recurrenceRule;
 	}
 
 
 	public void setRecurrenceRule(String recurrenceRule) {
 		this.recurrenceRule = recurrenceRule;
+	}
+
+
+	public Double getLatitude() {
+		return latitude;
 	}
 
 
@@ -345,6 +468,11 @@ public class BaseNote implements Serializable {
 	}
 
 
+	public Double getLongitude() {
+		return longitude;
+	}
+
+
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
@@ -353,10 +481,12 @@ public class BaseNote implements Serializable {
 	public void setLongitude(String longitude) {
 		try {
 			setLongitude(Double.parseDouble(longitude));
-		} catch (NumberFormatException | NullPointerException e) {
+		} catch (NumberFormatException e) {
+			this.longitude = null;
+		} catch (NullPointerException e) {
 			this.longitude = null;
 		}
-  }
+	}
 
 
 	public BaseCategory getCategory() {
@@ -366,6 +496,46 @@ public class BaseNote implements Serializable {
 
 	public void setCategory(BaseCategory baseCategory) {
 		this.baseCategory = baseCategory;
+	}
+
+
+	public Boolean isLocked() {
+		return !(locked == null || !locked);
+	}
+
+
+	public void setLocked(Boolean locked) {
+		this.locked = locked;
+	}
+
+
+	public void setLocked(int locked) {
+		this.locked = locked == 1;
+	}
+
+
+	public Boolean isChecklist() {
+		return !(checklist == null || !checklist);
+	}
+
+
+	public void setChecklist(Boolean checklist) {
+		this.checklist = checklist;
+	}
+
+
+	public void setChecklist(int checklist) {
+		this.checklist = checklist == 1;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 
